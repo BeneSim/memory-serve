@@ -46,12 +46,6 @@ pub fn load_assets(input: TokenStream) -> TokenStream {
     let input = input.trim_matches('"');
     let mut asset_path = Path::new(&input).to_path_buf();
 
-    // skip if a subscriber is already registered (for instance by rust_analyzer)
-    let _ = tracing_subscriber::fmt()
-        .without_time()
-        .with_target(false)
-        .try_init();
-
     if asset_path.is_relative() {
         if let Ok(root_dir) = env::var("MEMORY_SERVE_ROOT") {
             asset_path = Path::new(&root_dir).join(asset_path);
